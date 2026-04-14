@@ -19,6 +19,7 @@ class PlaceImage(models.Model):
         related_name='images'
     )
     image = models.ImageField(
+        upload_to='place_images/',
         verbose_name='Изображение',
     )
     order = models.PositiveIntegerField(verbose_name='Порядок')

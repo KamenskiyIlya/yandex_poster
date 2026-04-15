@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from places.models import Place
 from django.http import JsonResponse
+from django.urls import reverse
 
 
 def start_page(request):
@@ -8,6 +9,11 @@ def start_page(request):
     
     features = []
     for place in places:
+        detail_url = reverse(
+            'place_detail',
+            kwargs={'place_id': place.id}
+        )
+        
         feature = {
             "type": "Feature",
             "geometry": {
@@ -17,7 +23,7 @@ def start_page(request):
             "properties": {
                 "title": place.title,
                 "placeId": str(place.id),
-                "detailsUrl": f'static/places/{place.id}.json'
+                "detailsUrl": detail_url
             }
         }
         features.append(feature)

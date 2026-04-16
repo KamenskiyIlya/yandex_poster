@@ -23,7 +23,10 @@ class PlaceImage(models.Model):
         upload_to='place_images/',
         verbose_name='Изображение',
     )
-    order = models.PositiveIntegerField(verbose_name='Порядок')
+    order = models.PositiveIntegerField(
+        verbose_name='Порядок',
+        default=0,
+    )
     
-    def __str__(self):
-        return f'{self.order} {self.place.title}'
+    class Meta:
+        ordering = ['order']

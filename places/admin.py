@@ -1,7 +1,18 @@
 from django.contrib import admin
-from .models import Place, PlaceImage
+from django import forms
 from django.utils.html import format_html
+from .models import Place, PlaceImage
 from adminsortable2.admin import SortableStackedInline, SortableAdminBase
+from tinymce.widgets import TinyMCE
+
+
+class PlaceAdminForm(forms.ModelForm):
+    class Meta:
+        model = Place
+        fields = '__all__'
+        widgets = {
+            'description_long': TinyMCE(attrs={'cols': 80, 'rows': 30})
+        }
 
 
 class PlaceImageInline(SortableStackedInline):
@@ -17,6 +28,7 @@ class PlaceImageInline(SortableStackedInline):
 
 @admin.register(Place)
 class PlaceAdmin(SortableAdminBase, admin.ModelAdmin):
+    form = PlaceAdminForm
     list_display = ['id', 'title']
     list_display_links = ['id', 'title']
     ordering = ['id']

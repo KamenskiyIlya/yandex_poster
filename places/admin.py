@@ -31,8 +31,10 @@ class PlaceAdmin(SortableAdminBase, admin.ModelAdmin):
     form = PlaceAdminForm
     list_display = ['id', 'title']
     list_display_links = ['id', 'title']
+    search_fields = ['title']
     ordering = ['id']
     inlines = [PlaceImageInline]
+
 
 
 admin.site.register(PlaceImage)

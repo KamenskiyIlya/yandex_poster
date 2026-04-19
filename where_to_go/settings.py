@@ -1,14 +1,31 @@
 from pathlib import Path
 import os
 
+from environs import Env
+
+
+env = Env()
+env.read_env()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = 'django-insecure-nzy9v&qjbwkkv^&b(nkvcbgod_(*q203*=+xt6@a#!=t0ot2_)'
+SECRET_KEY = env.str('SECRET_KEY')
 
-DEBUG = True
+DEBUG = env.bool('DEBUG', False)
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = env.list('ALLOWED_HOSTS')
+
+CSRF_COOKIE_SECURE = env.bool('CSRF_COOKIE_SECURE', True)
+
+SESSION_COOKIE_SECURE = env.bool('SESSION_COOKIE_SECURE', True)
+
+SECURE_SSL_REDIRECT = env.bool('SECURE_SSL_REDIRECT', True)
+
+SECURE_HSTS_SECONDS = env.int('SECURE_HSTS_SECONDS', 0)
+
+SECURE_HSTS_INCLUDE_SUBDOMAINS = env.bool('SECURE_HSTS_INCLUDE_SUBDOMAINS', True)
+
+SECURE_HSTS_PRELOAD = env.bool('SECURE_HSTS_PRELOAD', True)
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -82,6 +99,8 @@ USE_I18N = True
 USE_TZ = True
 
 STATIC_URL = '/static/'
+
+STATIC_ROOT = BASE_DIR / 'production_static'
 
 STATICFILES_DIRS = [
     BASE_DIR / 'static',

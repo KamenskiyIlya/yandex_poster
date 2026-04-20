@@ -183,3 +183,4 @@ cython_debug/
 # Other
 media/
 production_static/
+logs/

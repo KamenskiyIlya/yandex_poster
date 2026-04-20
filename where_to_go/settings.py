@@ -111,3 +111,38 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+LOGS_DIR = BASE_DIR / 'logs'
+os.makedirs(LOGS_DIR, exist_ok=True)
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'rotating_file': {
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': LOGS_DIR / 'log_file.log',
+            'level': 'INFO',
+            'formatter': 'simple',
+            'maxBytes': 5 * 1024 * 1024,
+            'backupCount': 3,            
+        },
+        'console': {
+            'class': 'logging.StreamHandler',
+            'level': 'WARNING',
+            'formatter': 'simple',
+        },
+    },
+    'loggers': {
+        '': {
+            'level': 'INFO',
+            'handlers': ['rotating_file', 'console'],
+        },
+    },
+    'formatters': {
+        'simple': {
+            'format': '{name} | {levelname} | {asctime} | {message}',
+            'style': '{',
+        },
+    },
+}

@@ -23,7 +23,9 @@ SECURE_SSL_REDIRECT = env.bool('SECURE_SSL_REDIRECT', False)
 
 SECURE_HSTS_SECONDS = env.int('SECURE_HSTS_SECONDS', 0)
 
-SECURE_HSTS_INCLUDE_SUBDOMAINS = env.bool('SECURE_HSTS_INCLUDE_SUBDOMAINS', False)
+SECURE_HSTS_INCLUDE_SUBDOMAINS = env.bool(
+    'SECURE_HSTS_INCLUDE_SUBDOMAINS', False
+)
 
 SECURE_HSTS_PRELOAD = env.bool('SECURE_HSTS_PRELOAD', False)
 
@@ -125,7 +127,7 @@ LOGGING = {
             'level': 'INFO',
             'formatter': 'simple',
             'maxBytes': 5 * 1024 * 1024,
-            'backupCount': 3,            
+            'backupCount': 3,
         },
         'console': {
             'class': 'logging.StreamHandler',

@@ -10,9 +10,7 @@ class PlaceAdminForm(forms.ModelForm):
     class Meta:
         model = Place
         fields = '__all__'
-        widgets = {
-            'description_long': TinyMCE(attrs={'cols': 80, 'rows': 30})
-        }
+        widgets = {'description_long': TinyMCE(attrs={'cols': 80, 'rows': 30})}
 
 
 class PlaceImageInline(SortableStackedInline):
@@ -22,9 +20,11 @@ class PlaceImageInline(SortableStackedInline):
     fields = ['image', 'image_preview']
 
     def image_preview(self, obj):
-        return format_html('<img src={} style="max-height: 200px;" />',
+        return format_html(
+            '<img src={} style="max-height: 200px;" />',
             obj.image.url,
         )
+
 
 @admin.register(Place)
 class PlaceAdmin(SortableAdminBase, admin.ModelAdmin):
@@ -34,7 +34,6 @@ class PlaceAdmin(SortableAdminBase, admin.ModelAdmin):
     search_fields = ['title']
     ordering = ['id']
     inlines = [PlaceImageInline]
-
 
 
 admin.site.register(PlaceImage)

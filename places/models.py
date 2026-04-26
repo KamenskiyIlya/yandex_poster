@@ -3,11 +3,13 @@ from django.db import models
 
 class Place(models.Model):
     title = models.CharField(verbose_name='Название', unique=True)
-    description_short = models.CharField(max_length=300, verbose_name='Короткое описание')
+    description_short = models.CharField(
+        max_length=300, verbose_name='Короткое описание'
+    )
     description_long = models.TextField(verbose_name='Полное описание')
     longitude = models.FloatField(verbose_name='Долгота')
     latitude = models.FloatField(verbose_name='Широта')
-    
+
     def __str__(self):
         return self.title
 
@@ -26,6 +28,6 @@ class PlaceImage(models.Model):
         verbose_name='Порядок',
         default=0,
     )
-    
+
     class Meta:
         ordering = ['order']

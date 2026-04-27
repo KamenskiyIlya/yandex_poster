@@ -40,11 +40,13 @@ class Command(BaseCommand):
             },
         )
 
-        if image_urls:
+        if image_urls and created:
             self.download_images(place, image_urls)
 
         if created:
             self.stdout.write(f'Место было удачно записано - {title}')
+        else:
+            self.stdout.write(f'Место не было записано - {title}')
 
     def download_images(self, place, image_urls):
         for index, image_url in enumerate(image_urls):

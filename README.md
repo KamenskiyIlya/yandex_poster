@@ -127,8 +127,8 @@ python manage.py load_place путь_до_вашей_папки
   "imgs": [
     источники фото,
   ],
-  "description_short": короткое описание,
-  "description_long": длинное описание,
+  "short_description": короткое описание,
+  "long_description": длинное описание,
   "coordinates": {      # координаты
     "lat": широта,
     "lng": долгота,

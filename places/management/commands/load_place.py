@@ -24,8 +24,8 @@ class Command(BaseCommand):
         payload = response.json()
 
         title = payload.get('title')
-        description_short = payload.get('description_short', '')
-        description_long = payload.get('description_long', '')
+        short_description = payload.get('description_short', '')
+        long_description = payload.get('description_long', '')
         longitude = payload['coordinates'].get('lng')
         latitude = payload['coordinates'].get('lat')
         image_urls = payload.get('imgs', [])
@@ -33,8 +33,8 @@ class Command(BaseCommand):
         place, created = Place.objects.get_or_create(
             title=title,
             defaults={
-                'description_short': description_short,
-                'description_long': description_long,
+                'short_description': short_description,
+                'long_description': long_description,
                 'longitude': longitude,
                 'latitude': latitude,
             },

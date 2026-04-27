@@ -11,7 +11,7 @@ class PlaceAdminForm(forms.ModelForm):
     class Meta:
         model = Place
         fields = '__all__'
-        widgets = {'description_long': TinyMCE(attrs={'cols': 80, 'rows': 30})}
+        widgets = {'long_description': TinyMCE(attrs={'cols': 80, 'rows': 30})}
 
 
 class PlaceImageInline(SortableStackedInline):

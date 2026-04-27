@@ -3,10 +3,10 @@ from django.db import models
 
 class Place(models.Model):
     title = models.CharField(verbose_name='Название', unique=True)
-    description_short = models.CharField(
+    short_description = models.CharField(
         max_length=300, verbose_name='Короткое описание', blank=True
     )
-    description_long = models.TextField(
+    long_description = models.TextField(
         verbose_name='Полное описание', blank=True
     )
     longitude = models.FloatField(verbose_name='Долгота')

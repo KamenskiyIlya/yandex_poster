@@ -34,3 +34,4 @@ class PlaceImage(models.Model):
 
     class Meta:
         ordering = ['order']
+        indexes = [models.Index(fields=['order'])]

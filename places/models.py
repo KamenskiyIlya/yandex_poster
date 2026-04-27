@@ -3,8 +3,8 @@ from django.db import models
 
 class Place(models.Model):
     title = models.CharField(verbose_name='Название', unique=True)
-    short_description = models.CharField(
-        max_length=300, verbose_name='Короткое описание', blank=True
+    short_description = models.TextField(
+        verbose_name='Короткое описание', blank=True
     )
     long_description = models.TextField(
         verbose_name='Полное описание', blank=True

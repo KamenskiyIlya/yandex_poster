@@ -1,7 +1,5 @@
-import json
 import os
 from urllib.parse import urlparse
-from pathlib import Path
 
 from django.core.management.base import BaseCommand
 from django.core.files.base import ContentFile
@@ -11,77 +9,45 @@ import requests
 
 
 class Command(BaseCommand):
-    help = 'Подгружает в БД информации о местах из JSON файлов.'
+    help = 'Подгружает в БД информации о месте из JSON файла по URL.'
 
     def add_arguments(self, parser):
         parser.add_argument(
-            'json_directory', type=str, help='Путь к директории c json файлами'
+            'json_url', type=str, help='URL json файла с данными о месте.'
         )
 
     def handle(self, *args, **options):
-        json_directory = Path(options['json_directory'])
-        json_files = list(json_directory.glob('*.json'))
+        json_url = options['json_url']
 
-        if not json_files:
-            self.stdout.write(
-                self.style.WARNING(
-                    'В указанной директории не обнаружено json файлов'
-                )
-            )
+        response = requests.get(json_url)
+        response.raise_for_status()
+        payload = response.json()
 
-        files_found = len(json_files)
-        object_created = 0
-        error_creation = 0
+        title = payload.get('title')
+        description_short = payload.get('description_short', '')
+        description_long = payload.get('description_long', '')
+        longitude = payload['coordinates'].get('lng')
+        latitude = payload['coordinates'].get('lat')
+        image_urls = payload.get('imgs', [])
 
-        for json_file in json_files:
-            result = self.processing_file(json_file)
-            if result == 'success':
-                object_created += 1
-            elif result == 'error':
-                error_creation += 1
-
-        self.stdout.write(
-            f'Найдено файлов: {files_found}\n'
-            f'Создано новых мест: {object_created}\n'
-            f'Ошибок при создании: {error_creation}'
+        place, created = Place.objects.get_or_create(
+            title=title,
+            defaults={
+                'description_short': description_short,
+                'description_long': description_long,
+                'longitude': longitude,
+                'latitude': latitude,
+            },
         )
 
-    def processing_file(self, json_file):
-        try:
-            with open(json_file, 'r', encoding='utf-8') as file:
-                data = json.load(file)
+        if image_urls:
+            self.download_images(place, image_urls)
 
-            title = data.get('title')
-            description_short = data.get('description_short')
-            description_long = data.get('description_long')
-            longitude = data['coordinates'].get('lng')
-            latitude = data['coordinates'].get('lat')
-            image_urls = data.get('imgs', [])
-
-            place, created = Place.objects.get_or_create(
-                title=title,
-                defaults={
-                    'description_short': description_short,
-                    'description_long': description_long,
-                    'longitude': longitude,
-                    'latitude': latitude,
-                },
-            )
-
-            if image_urls:
-                self.download_images(place, image_urls)
-
-            if created:
-                return 'success'
-
-        except Exception as e:
-            self.stdout.write(
-                f'При загрузке нового места произошла ошибка: {e}'
-            )
-            return 'error'
+        if created:
+            self.stdout.write(f'Место было удачно записано - {title}')
 
     def download_images(self, place, image_urls):
-        for order, image_url in enumerate(image_urls):
+        for index, image_url in enumerate(image_urls):
             try:
                 response = requests.get(
                     image_url,
@@ -91,7 +57,7 @@ class Command(BaseCommand):
                 parsed_url = urlparse(image_url)
                 filename = os.path.basename(parsed_url.path)
 
-                place_image = PlaceImage(place=place, order=order + 1)
+                place_image = PlaceImage(place=place, order=index + 1)
 
                 place_image.image.save(
                     filename, ContentFile(response.content), save=True

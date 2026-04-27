@@ -21,6 +21,7 @@ class PlaceImage(models.Model):
         Place,
         on_delete=models.CASCADE,
         related_name='images',
+        verbose_name='Место',
     )
     image = models.ImageField(
         upload_to='place_images/',

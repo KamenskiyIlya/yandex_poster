@@ -37,4 +37,6 @@ class PlaceAdmin(SortableAdminBase, admin.ModelAdmin):
     inlines = [PlaceImageInline]
 
 
-admin.site.register(PlaceImage)
+@admin.register(PlaceImage)
+class PlaceImageAdmin(admin.ModelAdmin):
+    autocomplete_fields = ['place']

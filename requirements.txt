@@ -4,3 +4,4 @@ django-admin-sortable2==2.3.*
 django-tinymce==5.0.*
 environs==15.0.*
 requests==2.33.*
+django-debug-toolbar==6.3.*

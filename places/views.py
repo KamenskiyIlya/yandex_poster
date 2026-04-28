@@ -36,13 +36,12 @@ def start_page(request):
 
 
 def place_detail(request, place_id):
-    place = get_object_or_404(Place, id=place_id)
+    place = get_object_or_404(
+        Place.objects.prefetch_related('images'), id=place_id
+    )
 
-    image_urls = []
-    images = place.images.all().order_by('order')
-    for image in images:
-        relative_url = image.image.url
-        image_urls.append(relative_url)
+    images = sorted(place.images.all(), key=lambda image: image.order)
+    image_urls = [image.image.url for image in images]
 
     json_response = {
         'title': place.title,

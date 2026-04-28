@@ -59,11 +59,18 @@ class Command(BaseCommand):
                 parsed_url = urlparse(image_url)
                 filename = os.path.basename(parsed_url.path)
 
-                place_image = PlaceImage(place=place, order=index + 1)
+                # place_image = PlaceImage(place=place, order=index + 1)
 
-                place_image.image.save(
-                    filename, ContentFile(response.content), save=True
+                # place_image.image.save(
+                #     filename, ContentFile(response.content), save=True
+                # )
+
+                PlaceImage.objects.create(
+                    place=place,
+                    order=index + 1,
+                    image=ContentFile(response.content, name=filename),
                 )
+
             except Exception as e:
                 self.stdout.write(
                     f'Произошла ошибка при загрузке фото {image_url}\n'

@@ -112,7 +112,7 @@ python manage.py load_place ссылка_на_место
 4. В консоль выведется результат выполнения данной команды.
 > Если такое место уже создано в БД, команда ничего не сделает и оповестит об этом в консоле сообщением: Место не было записано.
 
-<img width="228" height="78" alt="image" src="https://github.com/user-attachments/assets/951d8390-433c-4b72-bbaf-83c121212c10" />
+<img width="972" height="74" alt="image" src="https://github.com/user-attachments/assets/a96dd5e7-d11a-450a-83c7-290555b98c67" />
 
 ## API
 

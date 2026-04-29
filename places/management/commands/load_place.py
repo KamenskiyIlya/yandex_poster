@@ -76,3 +76,4 @@ class Command(BaseCommand):
                     f'Произошла ошибка при загрузке фото {image_url}\n'
                     f'Ошибка: {e}'
                 )
+        self.stdout.write('К месту были подгружены фото')

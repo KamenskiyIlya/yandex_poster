@@ -49,7 +49,7 @@ class Command(BaseCommand):
             self.stdout.write(f'Место не было записано - {title}')
 
     def download_images(self, place, image_urls):
-        for index, image_url in enumerate(image_urls):
+        for index, image_url in enumerate(image_urls, start=1):
             try:
                 response = requests.get(
                     image_url,
@@ -59,15 +59,9 @@ class Command(BaseCommand):
                 parsed_url = urlparse(image_url)
                 filename = os.path.basename(parsed_url.path)
 
-                # place_image = PlaceImage(place=place, order=index + 1)
-
-                # place_image.image.save(
-                #     filename, ContentFile(response.content), save=True
-                # )
-
                 PlaceImage.objects.create(
                     place=place,
-                    order=index + 1,
+                    order=index,
                     image=ContentFile(response.content, name=filename),
                 )
 
